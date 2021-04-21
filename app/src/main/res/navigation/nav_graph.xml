@@ -5,6 +5,6 @@
 
     <fragment
         android:id="@+id/repositoryListFragment"
-        android:name="com.lukasz.allegrorepositories.RepositoryListFragment"
+        android:name="com.lukasz.allegrorepositories.repositorylist.RepositoryListFragment"
         android:label="RepositoryListFragment" />
 </navigation>

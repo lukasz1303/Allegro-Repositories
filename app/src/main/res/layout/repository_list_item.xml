@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="viewHolder"
+            type="com.lukasz.allegrorepositories.domain.GitHubRepository" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +19,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginStart="12dp"
             app:layout_constraintEnd_toStartOf="@+id/stars_linearLayout"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,23 +28,28 @@
                 android:id="@+id/repository_name_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 android:singleLine="true"
                 android:ellipsize="marquee"
+                android:text="@{viewHolder.name}"
                 tools:text="bigcache" />
 
             <TextView
                 android:id="@+id/repository_language_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="16sp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
+                android:text="@{viewHolder.language}"
                 tools:text="Go" />
         </LinearLayout>
 
@@ -51,7 +57,6 @@
             android:id="@+id/stars_linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
@@ -70,6 +75,7 @@
                 android:textSize="16sp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
+                app:stargazersCount="@{viewHolder.stargazers_count}"
                 tools:text="4.8k" />
 
             <ImageView
@@ -79,6 +85,7 @@
                 android:layout_weight="1"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="12dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_baseline_star_24"
                 android:contentDescription="@string/gold_star_image_description" />
