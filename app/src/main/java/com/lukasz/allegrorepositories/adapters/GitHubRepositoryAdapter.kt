@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lukasz.allegrorepositories.databinding.RepositoryListItemBinding
 import com.lukasz.allegrorepositories.domain.GitHubRepository
 
-class GitHubRepositoryAdapter :ListAdapter<GitHubRepository, GitHubRepositoryAdapter.GitHubRepositoryViewHolder>(GitHubRepositoryDiffCallback()) {
+class GitHubRepositoryAdapter(val clickListener: GitHubRepositoryListener) :ListAdapter<GitHubRepository, GitHubRepositoryAdapter.GitHubRepositoryViewHolder>(GitHubRepositoryDiffCallback()) {
 
-    class GitHubRepositoryViewHolder(private val binding: RepositoryListItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(gitHubRepository: GitHubRepository){
+    class GitHubRepositoryViewHolder(val binding: RepositoryListItemBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(gitHubRepository: GitHubRepository, clickListener: GitHubRepositoryListener){
             binding.viewHolder = gitHubRepository
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }
@@ -33,6 +34,13 @@ class GitHubRepositoryAdapter :ListAdapter<GitHubRepository, GitHubRepositoryAda
     }
 
     override fun onBindViewHolder(holder: GitHubRepositoryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.itemView.setOnClickListener{
+            clickListener.onClick(holder.binding.viewHolder!!)
+        }
+        holder.bind(getItem(position), clickListener)
     }
+}
+
+class GitHubRepositoryListener(val clickListener: (gitHubRepository: GitHubRepository) -> Unit) {
+    fun onClick(gitHubRepository: GitHubRepository) = clickListener(gitHubRepository)
 }

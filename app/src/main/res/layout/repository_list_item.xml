@@ -6,6 +6,9 @@
     <data>
         <import type="android.view.View" />
         <variable
+            name="clickListener"
+            type="com.lukasz.allegrorepositories.adapters.GitHubRepositoryListener" />
+        <variable
             name="viewHolder"
             type="com.lukasz.allegrorepositories.domain.GitHubRepository" />
     </data>

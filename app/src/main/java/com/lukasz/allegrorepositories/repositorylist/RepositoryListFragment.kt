@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lukasz.allegrorepositories.adapters.GitHubRepositoryAdapter
+import com.lukasz.allegrorepositories.adapters.GitHubRepositoryListener
 import com.lukasz.allegrorepositories.databinding.FragmentRepositoryListBinding
 
 class RepositoryListFragment : Fragment() {
@@ -37,7 +39,18 @@ class RepositoryListFragment : Fragment() {
             )
         )
 
-        binding.repositoryList.adapter = GitHubRepositoryAdapter()
+        binding.repositoryList.adapter = GitHubRepositoryAdapter(GitHubRepositoryListener {
+            viewModel.displayRepositoryDetails(it)
+        })
+
+        viewModel.navigateToSelectedRepository.observe(viewLifecycleOwner, {
+            if (null != it) {
+                this.findNavController().navigate(
+                    RepositoryListFragmentDirections.actionRepositoryListFragmentToDetailFragment(it)
+                )
+                viewModel.displayRepositoryDetailsComplete()
+            }
+        })
 
         return binding.root
     }
