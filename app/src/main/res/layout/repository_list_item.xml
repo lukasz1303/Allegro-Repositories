@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewHolder"
             type="com.lukasz.allegrorepositories.domain.GitHubRepository" />
@@ -12,13 +13,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/repository_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:minHeight="50dp">
 
         <LinearLayout
             android:id="@+id/name_language_repository_linearLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/stars_linearLayout"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,14 +33,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:singleLine="true"
                 android:ellipsize="marquee"
+                android:singleLine="true"
                 android:text="@{viewHolder.name}"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 tools:text="bigcache" />
 
             <TextView
@@ -44,12 +48,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="16sp"
-                android:singleLine="true"
+                android:layout_marginBottom="4dp"
                 android:ellipsize="marquee"
+                android:singleLine="true"
                 android:text="@{viewHolder.language}"
+                android:textSize="14sp"
+                android:visibility="@{viewHolder.language != null ? View.VISIBLE : View.GONE}"
                 tools:text="Go" />
         </LinearLayout>
 
@@ -72,11 +77,11 @@
                 android:layout_gravity="center"
                 android:gravity="end"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 app:stargazersCount="@{viewHolder.stargazers_count}"
-                tools:text="4.8k" />
+                tools:text="1.44k" />
 
             <ImageView
                 android:id="@+id/star_image"

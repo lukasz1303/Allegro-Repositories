@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lukasz.allegrorepositories.adapters.GitHubRepositoryAdapter
 import com.lukasz.allegrorepositories.databinding.FragmentRepositoryListBinding
@@ -28,6 +29,13 @@ class RepositoryListFragment : Fragment() {
 
         val manager = GridLayoutManager(activity,1)
         binding.repositoryList.layoutManager = manager
+
+        binding.repositoryList.addItemDecoration(
+            DividerItemDecoration(
+                binding.repositoryList.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
         binding.repositoryList.adapter = GitHubRepositoryAdapter()
 
