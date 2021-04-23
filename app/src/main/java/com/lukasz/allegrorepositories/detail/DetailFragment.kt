@@ -6,13 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.lukasz.allegrorepositories.databinding.FragmentDetailBinding
-import com.lukasz.allegrorepositories.repositorylist.RepositoryListFragmentDirections
-import com.lukasz.allegrorepositories.repositorylist.RepositoryListViewModel
 
 
 class DetailFragment : Fragment() {

@@ -5,9 +5,9 @@
     <color name="orange_dark">#c41900</color>
     <color name="purple_light">#FF6e4ea6</color>
     <color name="purple_dark">#3F2476</color>
-    <color name="text_color">#FF000000</color>
+    <color name="text_color">#DFDFDF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gold">#FFC107</color>
     <color name="blue">#1976D2</color>
-    <color name="image_color">#323232</color>
+    <color name="image_color">#C8C8C8</color>
 </resources>
