@@ -1,21 +1,36 @@
 package com.lukasz.allegrorepositories.adapters
 
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lukasz.allegrorepositories.domain.GitHubRepository
-import java.math.BigDecimal
-import java.math.MathContext
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.*
 import kotlin.math.ceil
 import kotlin.math.log10
+
 
 @BindingAdapter("repositoryList")
 fun bindRecyclerView(recyclerView: RecyclerView, gitHubRepositories: List<GitHubRepository>?) {
     val adapter = recyclerView.adapter as GitHubRepositoryAdapter
     adapter.submitList(gitHubRepositories)
+}
+
+@BindingAdapter("doubleToTnt")
+fun convertDoubleToInt(textView: TextView, value: Double?) {
+    if (value != null) {
+        textView.text = value.toInt().toString()
+    }
+}
+
+@BindingAdapter("date")
+fun convertDate(textView: TextView, dateString: String?) {
+    if (dateString != null) {
+        val split =  dateString.substring(0,10).split("-")
+        if (split.size == 3){
+            val text = split[2] + "." + split[1] + "." + split[0]
+            textView.text = text
+        }
+    }
 }
 
 @BindingAdapter("stargazersCount")

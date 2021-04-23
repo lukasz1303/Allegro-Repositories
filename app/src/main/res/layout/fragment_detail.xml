@@ -1,22 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.lukasz.allegrorepositories.detail.DetailViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".DetailFragment">
-
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@{viewModel.selectedRepository.name}" />
+            android:fillViewport="true"
+            tools:context=".DetailFragment">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/detail_repository_name_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="36dp"
+                    android:gravity="center"
+                    android:text="@{viewModel.selectedRepository.name}"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Ralph" />
+
+                <TextView
+                    android:id="@+id/forks_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:doubleToTnt="@{viewModel.selectedRepository.forks}"
+                    app:drawableTopCompat="@drawable/ic_fork"
+                    app:layout_constraintEnd_toStartOf="@+id/stars_textView"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_repository_name_textView"
+                    tools:text="4" />
+
+                <TextView
+                    android:id="@+id/stars_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:drawableTopCompat="@drawable/ic_baseline_star_24"
+                    app:layout_constraintEnd_toStartOf="@+id/open_issues_textView"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/forks_textView"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_repository_name_textView"
+                    app:stargazersCount="@{viewModel.selectedRepository.stargazers_count}"
+                    tools:text="1.44k" />
+
+
+                <TextView
+                    android:id="@+id/open_issues_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:doubleToTnt="@{viewModel.selectedRepository.open_issues}"
+                    app:drawableTopCompat="@drawable/ic_issue_opened"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/stars_textView"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_repository_name_textView"
+                    tools:text="60" />
+
+                <TextView
+                    android:id="@+id/description_label_textView"
+                    style="@style/DetailLabel"
+                    android:visibility="@{viewModel.selectedRepository.description != null &amp;&amp; viewModel.selectedRepository.description.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/description"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stars_textView" />
+
+                <TextView
+                    android:id="@+id/description_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="@{viewModel.selectedRepository.description != null &amp;&amp; viewModel.selectedRepository.description.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@{viewModel.selectedRepository.description}"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/description_label_textView"
+                    tools:text="Some description" />
+
+
+                <TextView
+                    android:id="@+id/homepage_url_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="@drawable/ic_link"
+                    android:onClick="@{() -> viewModel.displayInWebBrowser(viewModel.selectedRepository.homepage)}"
+                    android:text="@{viewModel.selectedRepository.homepage}"
+                    android:textColor="@color/blue"
+                    android:visibility="@{viewModel.selectedRepository.homepage != null &amp;&amp; viewModel.selectedRepository.homepage.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/description_textView"
+                    tools:text="ralph.allegro.tech/" />
+
+                <TextView
+                    android:id="@+id/language_label_textView"
+                    style="@style/DetailLabel"
+                    android:visibility="@{viewModel.selectedRepository.language != null &amp;&amp; viewModel.selectedRepository.language.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@string/language"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/homepage_url_textView" />
+
+                <TextView
+                    android:id="@+id/language_textView"
+                    style="@style/DetailContent"
+                    android:visibility="@{viewModel.selectedRepository.language != null &amp;&amp; viewModel.selectedRepository.language.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@{viewModel.selectedRepository.language}"
+                    app:layout_constraintStart_toEndOf="@+id/language_label_textView"
+                    app:layout_constraintTop_toBottomOf="@+id/homepage_url_textView"
+                    tools:text="Python" />
+
+                <TextView
+                    android:id="@+id/creation_date_label_textView"
+                    style="@style/DetailLabel"
+                    android:visibility="@{viewModel.selectedRepository.created_at != null &amp;&amp; viewModel.selectedRepository.created_at.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@string/creation_date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/language_label_textView" />
+
+                <TextView
+                    android:id="@+id/creation_date_textView"
+                    style="@style/DetailContent"
+                    android:visibility="@{viewModel.selectedRepository.created_at != null &amp;&amp; viewModel.selectedRepository.created_at.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:date="@{viewModel.selectedRepository.created_at}"
+                    app:layout_constraintStart_toEndOf="@+id/creation_date_label_textView"
+                    app:layout_constraintTop_toBottomOf="@+id/language_label_textView"
+                    tools:text="12.05.2012" />
+
+                <TextView
+                    android:id="@+id/date_of_pushed_label_textView"
+                    style="@style/DetailLabel"
+                    android:visibility="@{viewModel.selectedRepository.updated_at != null &amp;&amp; viewModel.selectedRepository.updated_at.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@string/date_of_last_commit"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/creation_date_label_textView" />
+
+                <TextView
+                    android:id="@+id/date_of_pushed_textView"
+                    style="@style/DetailContent"
+                    android:visibility="@{viewModel.selectedRepository.updated_at != null &amp;&amp; viewModel.selectedRepository.updated_at.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:date="@{viewModel.selectedRepository.updated_at}"
+                    app:layout_constraintStart_toEndOf="@+id/date_of_pushed_label_textView"
+                    app:layout_constraintTop_toBottomOf="@+id/creation_date_label_textView"
+                    tools:text="23.04.2021" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.selectedRepository.default_branch != null &amp;&amp; viewModel.selectedRepository.default_branch.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date_of_pushed_label_textView">
+
+                    <TextView
+                        android:id="@+id/default_branch_label_textView"
+                        style="@style/DetailLabel"
+                        android:text="@string/default_branch" />
+
+                    <TextView
+                        android:id="@+id/default_branch_textView"
+                        style="@style/DetailContent"
+                        android:singleLine="true"
+                        android:text="@{viewModel.selectedRepository.default_branch}"
+                        tools:text="master" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rectangle_background"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:visibility="@{viewModel.selectedRepository.html_url != null &amp;&amp; viewModel.selectedRepository.html_url.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{() -> viewModel.displayInWebBrowser(viewModel.selectedRepository.html_url)}"
+                    android:padding="16dp"
+                    android:text="@string/show_on_github"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:drawableStartCompat="@drawable/ic_github_mark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 </layout>
