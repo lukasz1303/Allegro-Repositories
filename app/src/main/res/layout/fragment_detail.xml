@@ -116,16 +116,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:drawablePadding="8dp"
-                    app:drawableStartCompat="@drawable/ic_link"
+                    android:gravity="center|start"
                     android:onClick="@{() -> viewModel.displayInWebBrowser(viewModel.selectedRepository.homepage)}"
                     android:text="@{viewModel.selectedRepository.homepage}"
                     android:textColor="@color/purple_dark"
-                    android:gravity="center"
                     android:visibility="@{viewModel.selectedRepository.homepage != null &amp;&amp; viewModel.selectedRepository.homepage.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:drawableStartCompat="@drawable/ic_link"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/description_textView"
                     tools:text="ralph.allegro.tech/" />
@@ -163,7 +165,8 @@
                     app:languages="@{viewModel.selectedRepository.allLanguages}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/all_languages_label_textView"
-                    tools:text="Python 59%, Java 20%" />
+                    android:lineSpacingExtra="4dp"
+                    tools:text="Python 59%\nJava 20%" />
 
 
                 <TextView

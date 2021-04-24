@@ -1,11 +1,12 @@
 package com.lukasz.allegrorepositories.repositorylist
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+
 
 class RepositoryListFragment : Fragment() {
 
@@ -35,7 +37,7 @@ class RepositoryListFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val manager = GridLayoutManager(activity,1)
+        val manager = GridLayoutManager(activity, 1)
         binding.repositoryList.layoutManager = manager
 
         binding.repositoryList.addItemDecoration(
@@ -62,7 +64,36 @@ class RepositoryListFragment : Fragment() {
             }
         })
 
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.repository_list_menu, menu)
+        val searchItem = menu.findItem(R.id.menu_search)
+        val searchView = searchItem.actionView as SearchView
+        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                searchView.setQuery("", false)
+                searchItem.collapseActionView()
+                viewModel.setSearchedName("")
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    viewModel.setSearchedName(newText)
+                }
+                return false
+            }
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun updateRepositories(){
@@ -70,14 +101,18 @@ class RepositoryListFragment : Fragment() {
         CoroutineScope(job + Dispatchers.Main).launch {
             val result = viewModel.refreshDataFromRepositoryWithResult()
             if (result == 1) {
-                Toast.makeText(context,
+                Toast.makeText(
+                    context,
                     R.string.refresh_done_toast_message,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             else if (result == 2) {
-                Toast.makeText(context,
+                Toast.makeText(
+                    context,
                     R.string.refresh_failed_toast_message,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         binding.swipeRefresh.isRefreshing = false

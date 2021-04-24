@@ -34,6 +34,10 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
         _navigateToSelectedRepository.value = null
     }
 
+    fun setSearchedName(name: String) {
+        gitHubReposRepository.setSearchedName(name)
+    }
+
     init {
         refreshDataFromRepository()
     }

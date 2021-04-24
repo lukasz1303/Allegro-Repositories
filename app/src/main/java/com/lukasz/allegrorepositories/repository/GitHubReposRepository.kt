@@ -2,6 +2,7 @@ package com.lukasz.allegrorepositories.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.lukasz.allegrorepositories.database.GitHubRepositoriesDatabase
 import com.lukasz.allegrorepositories.database.asDomainModel
@@ -14,11 +15,21 @@ import kotlinx.coroutines.withContext
 
 class GitHubReposRepository(private val database: GitHubRepositoriesDatabase) {
 
-    val gitHubRepositories: LiveData<List<GitHubRepository>> =
-        Transformations.map(database.GithHubRepoitoryDao.getGitHubRepositories()) {
+    private var _searchedName = MutableLiveData<String>()
+
+    fun setSearchedName(name: String) {
+        _searchedName.value = name
+    }
+
+    init {
+        _searchedName.value = ""
+    }
+
+    val gitHubRepositories: LiveData<List<GitHubRepository>> = Transformations.switchMap(_searchedName) {
+        Transformations.map(database.GithHubRepoitoryDao.getGitHubRepositories(_searchedName.value!!)) {
             it.asDomainModel()
         }
-
+    }
     suspend fun refreshGitHubRepositories() {
         withContext(Dispatchers.IO) {
             var page = 1
@@ -30,7 +41,6 @@ class GitHubReposRepository(private val database: GitHubRepositoriesDatabase) {
             } while (gitHubRepositories.isNotEmpty())
         }
     }
-
 
     suspend fun refreshGitHubRepositoryLanguage(name: String): String {
         var languagesString = ""

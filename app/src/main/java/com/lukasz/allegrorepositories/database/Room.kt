@@ -11,15 +11,14 @@ import com.lukasz.allegrorepositories.database.GitHubRepositoriesDatabase.Compan
 
 @Dao
 interface GithHubRepoitoryDao {
-    @Query("select * from databasegithubrepository")
-    fun getGitHubRepositories(): LiveData<List<DatabaseGitHubRepository>>
+    @Query("select * from databasegithubrepository where name like '%' || :name || '%'")
+    fun getGitHubRepositories(name: String): LiveData<List<DatabaseGitHubRepository>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(videos: List<DatabaseGitHubRepository>)
 
     @Query("UPDATE DatabaseGitHubRepository SET allLanguages = :languages WHERE name = :name")
     fun updateLanguages(name: String, languages: String?): Int
-
 }
 
 @Database(entities = [DatabaseGitHubRepository::class], version = 3)
