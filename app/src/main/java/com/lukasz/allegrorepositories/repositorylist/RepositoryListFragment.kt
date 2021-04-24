@@ -64,6 +64,18 @@ class RepositoryListFragment : Fragment() {
             }
         })
 
+
+        viewModel.repositoryEmpty.observe(viewLifecycleOwner, {
+            if (it){
+                binding.repositoryList.visibility = View.GONE
+                binding.emptyView.visibility = View.VISIBLE
+            } else {
+                binding.repositoryList.visibility = View.VISIBLE
+                binding.emptyView.visibility = View.GONE
+            }
+        })
+
+
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -99,7 +111,7 @@ class RepositoryListFragment : Fragment() {
     private fun updateRepositories(){
         val job = Job()
         CoroutineScope(job + Dispatchers.Main).launch {
-            val result = viewModel.refreshDataFromRepositoryWithResult()
+            val result = viewModel.refreshDataFromRepository()
             if (result == 1) {
                 Toast.makeText(
                     context,

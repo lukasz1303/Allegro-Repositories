@@ -22,6 +22,10 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    private val _repositoryEmpty = MutableLiveData<Boolean>()
+    val repositoryEmpty: LiveData<Boolean>
+        get() = _repositoryEmpty
+
     private val _navigateToSelectedRepository = MutableLiveData<GitHubRepository>()
     val navigateToSelectedRepository: LiveData<GitHubRepository>
         get() = _navigateToSelectedRepository
@@ -39,26 +43,30 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     init {
-        refreshDataFromRepository()
-    }
-
-    private fun refreshDataFromRepository() {
-        coroutineScope.launch {
-            try {
-                gitHubReposRepository.refreshGitHubRepositories()
-                Log.i("RepositoryListViewModel", "Success: repositories retrieved")
-
-            } catch (e: Exception) {
-                Log.i("RepositoryListViewModel", "Failure: ${e.message}")
+        _repositoryEmpty.value = false
+        val job = Job()
+        CoroutineScope(job + Dispatchers.Main).launch {
+            val result = refreshDataFromRepository()
+            if (result == 1) {
+                if (gitHubRepositories.value?.size ?: 0 > 0){
+                    _repositoryEmpty.value = false
+                }
+            }
+            else if (result == 2) {
+                _repositoryEmpty.value = true
             }
         }
+
     }
 
-    suspend fun refreshDataFromRepositoryWithResult(): Int {
+    suspend fun refreshDataFromRepository(): Int {
         var res = 1
         coroutineScope.launch {
             res = try {
                 gitHubReposRepository.refreshGitHubRepositories()
+                if (gitHubRepositories.value?.size ?: 0 > 0){
+                    _repositoryEmpty.value = false
+                }
                 Log.i("RepositoryListViewModel", "Success: repositories refreshed")
 
             } catch (e: Exception) {
