@@ -15,7 +15,7 @@ class NetworkGitHubRepository(
     val forks: Double?,
     val open_issues: Double?,
     val default_branch: String?,
-    val allLanguages: String,
+    val allLanguages: String?,
 )
 
 fun List<NetworkGitHubRepository>.asDatabaseModel(): List<DatabaseGitHubRepository> {

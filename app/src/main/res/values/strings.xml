@@ -8,4 +8,6 @@
     <string name="default_branch">Default branch:</string>
     <string name="show_on_github">Show on GitHub</string>
     <string name="languages">Languages:</string>
+    <string name="refresh_failed_toast_message">"Refresh failed.Check your internet connection"</string>
+    <string name="refresh_done_toast_message">"Repositories refreshed"</string>
 </resources>

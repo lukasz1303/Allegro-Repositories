@@ -50,4 +50,18 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    suspend fun refreshDataFromRepositoryWithResult(): Int {
+        var res = 1
+        coroutineScope.launch {
+            res = try {
+                gitHubReposRepository.refreshGitHubRepositories()
+                Log.i("RepositoryListViewModel", "Success: repositories refreshed")
+
+            } catch (e: Exception) {
+                Log.i("RepositoryListViewModel", "Refresh Failure: ${e.message}")
+                2
+            }
+        }.join()
+        return res
+    }
 }
