@@ -2,9 +2,10 @@
     <string name="app_name">Allegro Repositories</string>
     <string name="gold_star_image_description">Gold star</string>
     <string name="description">Description</string>
-    <string name="language">Language</string>
-    <string name="creation_date">Creation date</string>
-    <string name="date_of_last_commit">Date of last commit</string>
-    <string name="default_branch">Default branch</string>
+    <string name="main_language">Main language:</string>
+    <string name="creation_date">Creation date:</string>
+    <string name="date_of_last_commit">Date of last commit:</string>
+    <string name="default_branch">Default branch:</string>
     <string name="show_on_github">Show on GitHub</string>
+    <string name="languages">Languages:</string>
 </resources>

@@ -134,7 +134,7 @@
                     android:id="@+id/language_label_textView"
                     style="@style/DetailLabel"
                     android:visibility="@{viewModel.selectedRepository.language != null &amp;&amp; viewModel.selectedRepository.language.length() > 0 ? View.VISIBLE : View.GONE}"
-                    android:text="@string/language"
+                    android:text="@string/main_language"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/homepage_url_textView" />
 
@@ -148,12 +148,31 @@
                     tools:text="Python" />
 
                 <TextView
+                    android:id="@+id/all_languages_label_textView"
+                    style="@style/DetailLabel"
+                    android:visibility="@{viewModel.selectedRepository.allLanguages != null &amp;&amp; viewModel.selectedRepository.allLanguages.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@string/languages"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/language_label_textView" />
+
+                <TextView
+                    android:id="@+id/all_languages_textView"
+                    style="@style/DetailContent"
+                    android:layout_marginTop="2dp"
+                    android:visibility="@{viewModel.selectedRepository.allLanguages != null &amp;&amp; viewModel.selectedRepository.allLanguages.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:languages="@{viewModel.selectedRepository.allLanguages}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/all_languages_label_textView"
+                    tools:text="Python 59%, Java 20%" />
+
+
+                <TextView
                     android:id="@+id/creation_date_label_textView"
                     style="@style/DetailLabel"
                     android:visibility="@{viewModel.selectedRepository.created_at != null &amp;&amp; viewModel.selectedRepository.created_at.length() > 0 ? View.VISIBLE : View.GONE}"
                     android:text="@string/creation_date"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/language_label_textView" />
+                    app:layout_constraintTop_toBottomOf="@+id/all_languages_textView" />
 
                 <TextView
                     android:id="@+id/creation_date_textView"
@@ -161,7 +180,7 @@
                     android:visibility="@{viewModel.selectedRepository.created_at != null &amp;&amp; viewModel.selectedRepository.created_at.length() > 0 ? View.VISIBLE : View.GONE}"
                     app:date="@{viewModel.selectedRepository.created_at}"
                     app:layout_constraintStart_toEndOf="@+id/creation_date_label_textView"
-                    app:layout_constraintTop_toBottomOf="@+id/language_label_textView"
+                    app:layout_constraintTop_toBottomOf="@+id/all_languages_textView"
                     tools:text="12.05.2012" />
 
                 <TextView

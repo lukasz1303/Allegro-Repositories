@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.lukasz.allegrorepositories.adapters.getAllLanguages
 import com.lukasz.allegrorepositories.databinding.FragmentDetailBinding
 
 
@@ -40,6 +41,24 @@ class DetailFragment : Fragment() {
                 )
                 requireActivity().startActivity(webIntent)
                 viewModel.displayInWebBrowserComplete()
+            }
+        })
+
+
+        viewModel.navigateToGithubUrl.observe(viewLifecycleOwner, {
+            if (null != it) {
+                val webIntent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse(it)
+                )
+                requireActivity().startActivity(webIntent)
+                viewModel.displayInWebBrowserComplete()
+            }
+        })
+
+        viewModel.languages.observe(viewLifecycleOwner, {
+            if(it != null && it != ""){
+                binding.allLanguagesLabelTextView.visibility = View.VISIBLE
+                getAllLanguages( binding.allLanguagesTextView, it)
             }
         })
 

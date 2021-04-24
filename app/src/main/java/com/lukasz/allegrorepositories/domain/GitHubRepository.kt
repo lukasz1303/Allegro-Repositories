@@ -16,5 +16,6 @@ data class GitHubRepository(
         val homepage: String?,
         val forks: Double?,
         val open_issues: Double?,
-        val default_branch: String?
+        val default_branch: String?,
+        val allLanguages: String?
 ) :Parcelable

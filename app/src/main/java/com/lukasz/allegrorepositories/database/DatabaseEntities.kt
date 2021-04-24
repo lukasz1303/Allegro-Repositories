@@ -18,7 +18,8 @@ data class DatabaseGitHubRepository constructor(
         val homepage: String?,
         val forks: Double?,
         val open_issues: Double?,
-        val default_branch: String?)
+        val default_branch: String?,
+        val allLanguages: String?)
 
 fun List<DatabaseGitHubRepository>.asDomainModel(): List<GitHubRepository> {
     return map {
@@ -34,6 +35,7 @@ fun List<DatabaseGitHubRepository>.asDomainModel(): List<GitHubRepository> {
                 homepage = it.homepage,
                 forks = it.forks,
                 open_issues = it.open_issues,
-                default_branch =  it.default_branch)
+                default_branch =  it.default_branch,
+                allLanguages = it.allLanguages)
     }
 }

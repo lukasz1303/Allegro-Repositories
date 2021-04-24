@@ -5,8 +5,12 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lukasz.allegrorepositories.domain.GitHubRepository
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 import kotlin.math.ceil
 import kotlin.math.log10
+import kotlin.math.roundToInt
 
 
 @BindingAdapter("repositoryList")
@@ -19,6 +23,36 @@ fun bindRecyclerView(recyclerView: RecyclerView, gitHubRepositories: List<GitHub
 fun convertDoubleToInt(textView: TextView, value: Double?) {
     if (value != null) {
         textView.text = value.toInt().toString()
+    }
+}
+
+@BindingAdapter("languages")
+fun getAllLanguages(textView: TextView, languages: String?) {
+    val array = languages?.split(",")
+    val mapLanguages = mutableMapOf<String, Double>()
+
+    if (array != null) {
+        var counter = 0.0
+        val formatter =
+            DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+        for (i in array){
+            val lang = i.split(":")
+            if (lang.size>1){
+                counter += lang[1].toDouble()
+                mapLanguages[lang[0]] = lang[1].toDouble()
+            }
+        }
+        var text = ""
+        for (i in mapLanguages){
+            if((i.value/counter*100)>0.01)
+            text += if (text == ""){
+                i.key + " " + formatter.format(i.value/counter*100) + "%"
+            } else {
+                "\n" + i.key + " " + formatter.format(i.value/counter*100) + "%"
+            }
+        }
+        textView.text = text
+        textView.visibility = View.VISIBLE
     }
 }
 

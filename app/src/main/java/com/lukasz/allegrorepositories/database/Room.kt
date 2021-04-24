@@ -6,6 +6,7 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.lukasz.allegrorepositories.database.GitHubRepositoriesDatabase.Companion.MIGRATION_1_2
+import com.lukasz.allegrorepositories.database.GitHubRepositoriesDatabase.Companion.MIGRATION_2_3
 
 
 @Dao
@@ -14,11 +15,14 @@ interface GithHubRepoitoryDao {
     fun getGitHubRepositories(): LiveData<List<DatabaseGitHubRepository>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll( videos: List<DatabaseGitHubRepository>)
+    fun insertAll(videos: List<DatabaseGitHubRepository>)
+
+    @Query("UPDATE DatabaseGitHubRepository SET allLanguages = :languages WHERE name = :name")
+    fun updateLanguages(name: String, languages: String?): Int
 
 }
 
-@Database(entities = [DatabaseGitHubRepository::class], version = 2)
+@Database(entities = [DatabaseGitHubRepository::class], version = 3)
 abstract class GitHubRepositoriesDatabase: RoomDatabase() {
     abstract val GithHubRepoitoryDao: GithHubRepoitoryDao
 
@@ -63,6 +67,14 @@ abstract class GitHubRepositoriesDatabase: RoomDatabase() {
                 )
             }
         }
+        val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE databasegithubrepository "
+                            + " ADD COLUMN allLanguages TEXT"
+                )
+            }
+        }
     }
 }
 
@@ -76,6 +88,7 @@ fun getDatabase(context: Context): GitHubRepositoriesDatabase {
                 GitHubRepositoriesDatabase::class.java,
                 "GitHubRepositories"
             ).addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_2_3)
                 .build()
         }
     }
