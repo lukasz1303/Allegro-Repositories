@@ -2,6 +2,7 @@ package com.lukasz.allegrorepositories.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.lukasz.allegrorepositories.database.GitHubRepositoriesDatabase
@@ -21,15 +22,34 @@ class GitHubReposRepository(private val database: GitHubRepositoriesDatabase) {
         _searchedName.value = name
     }
 
-    init {
-        _searchedName.value = ""
+    private var _order = MutableLiveData<Int>()
+
+    fun setOrder(order: Int) {
+        _order.value = order
     }
 
-    val gitHubRepositories: LiveData<List<GitHubRepository>> = Transformations.switchMap(_searchedName) {
-        Transformations.map(database.GithHubRepoitoryDao.getGitHubRepositories(_searchedName.value!!)) {
+    init {
+        _searchedName.value = ""
+        _order.value = 1
+    }
+
+
+    private val combinedValues = MediatorLiveData<Pair<String?, Int?>>().apply {
+        addSource(_searchedName) {
+            value = Pair(it, _order.value)
+        }
+        addSource(_order) {
+            value = Pair(_searchedName.value, it)
+        }
+    }
+
+
+    val gitHubRepositories: LiveData<List<GitHubRepository>> = Transformations.switchMap(combinedValues) { pair ->
+        Transformations.map(database.GithHubRepoitoryDao.getGitHubRepositories(pair.first!!, pair.second!!)) {
             it.asDomainModel()
         }
     }
+
     suspend fun refreshGitHubRepositories() {
         withContext(Dispatchers.IO) {
             var page = 1

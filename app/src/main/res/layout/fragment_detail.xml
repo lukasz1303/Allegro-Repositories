@@ -197,8 +197,8 @@
                 <TextView
                     android:id="@+id/date_of_pushed_textView"
                     style="@style/DetailContent"
-                    android:visibility="@{viewModel.selectedRepository.updated_at != null &amp;&amp; viewModel.selectedRepository.updated_at.length() > 0 ? View.VISIBLE : View.GONE}"
-                    app:date="@{viewModel.selectedRepository.updated_at}"
+                    android:visibility="@{viewModel.selectedRepository.pushed_at != null &amp;&amp; viewModel.selectedRepository.pushed_at.length() > 0 ? View.VISIBLE : View.GONE}"
+                    app:date="@{viewModel.selectedRepository.pushed_at}"
                     app:layout_constraintStart_toEndOf="@+id/date_of_pushed_label_textView"
                     app:layout_constraintTop_toBottomOf="@+id/creation_date_label_textView"
                     tools:text="23.04.2021" />

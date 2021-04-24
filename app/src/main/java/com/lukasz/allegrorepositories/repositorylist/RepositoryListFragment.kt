@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -106,6 +107,19 @@ class RepositoryListFragment : Fragment() {
         })
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.stars_sort) {
+            viewModel.setOrder(0)
+        }
+        if (item.itemId == R.id.last_commit_sort){
+            viewModel.setOrder(1)
+        }
+        if (item.itemId == R.id.alphabetical_sort) {
+            viewModel.setOrder(2)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun updateRepositories(){

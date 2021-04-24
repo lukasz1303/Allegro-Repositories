@@ -11,8 +11,8 @@ import com.lukasz.allegrorepositories.database.GitHubRepositoriesDatabase.Compan
 
 @Dao
 interface GithHubRepoitoryDao {
-    @Query("select * from databasegithubrepository where name like '%' || :name || '%'")
-    fun getGitHubRepositories(name: String): LiveData<List<DatabaseGitHubRepository>>
+    @Query("select * from databasegithubrepository where name like '%' || :name || '%' order by CASE WHEN :order = 1 THEN pushed_at END DESC, CASE WHEN :order = 0 THEN stargazers_count END DESC, CASE WHEN :order = 2 THEN lower(name) END")
+    fun getGitHubRepositories(name: String, order: Int): LiveData<List<DatabaseGitHubRepository>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(videos: List<DatabaseGitHubRepository>)

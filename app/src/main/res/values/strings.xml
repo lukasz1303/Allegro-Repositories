@@ -12,4 +12,8 @@
     <string name="refresh_done_toast_message">"Repositories refreshed"</string>
     <string name="search">"Search"</string>
     <string name="no_repositories_found">No repositories found.\nCheck your internet connection</string>
+    <string name="sorting">Sorting</string>
+    <string name="stars">Stars</string>
+    <string name="last_commit">Last commit</string>
+    <string name="alphabetical">Alphabetical</string>
 </resources>

@@ -42,6 +42,11 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
         gitHubReposRepository.setSearchedName(name)
     }
 
+    fun setOrder(order: Int) {
+        gitHubReposRepository.setOrder(order)
+    }
+
+
     init {
         _repositoryEmpty.value = false
         val job = Job()
@@ -53,7 +58,7 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
             else if (result == 2) {
-                _repositoryEmpty.value = true
+                _repositoryEmpty.value = gitHubRepositories.value?.size ?: 0 <= 0
             }
         }
 

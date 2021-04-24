@@ -5,6 +5,23 @@
         android:id="@+id/menu_search"
         android:title="@string/search"
         android:icon="@drawable/ic_baseline_search_24"
-        app:showAsAction="collapseActionView|always"
+        app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/sorting_menu"
+        android:title="@string/sorting"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/stars_sort"
+                android:title="@string/stars" />
+            <item
+                android:id="@+id/last_commit_sort"
+                android:title="@string/last_commit" />
+            <item
+                android:id="@+id/alphabetical_sort"
+                android:title="@string/alphabetical" />
+        </menu>
+    </item>
 </menu>
