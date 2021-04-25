@@ -68,11 +68,36 @@ class RepositoryListFragment : Fragment() {
 
         viewModel.repositoryEmpty.observe(viewLifecycleOwner, {
             if (it){
-                binding.repositoryList.visibility = View.GONE
                 binding.emptyView.visibility = View.VISIBLE
             } else {
-                binding.repositoryList.visibility = View.VISIBLE
                 binding.emptyView.visibility = View.GONE
+            }
+        })
+
+        viewModel.repositoryRefreshing.observe(viewLifecycleOwner, {
+            if (it){
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+
+        viewModel.gitHubRepositories.observe(viewLifecycleOwner, {
+            if (it != null){
+                if(it.isNotEmpty()){
+                    binding.repositoryList.visibility = View.VISIBLE
+                    binding.emptyView.visibility = View.GONE
+                } else{
+                    binding.repositoryList.visibility = View.GONE
+                    if(binding.progressBar.visibility == View.GONE){
+                        binding.emptyView.visibility = View.VISIBLE
+                    }
+                }
+                binding.progressBar.visibility = View.GONE
+            } else {
+                if(binding.progressBar.visibility == View.GONE){
+                    binding.emptyView.visibility = View.VISIBLE
+                }
             }
         })
 
@@ -102,6 +127,7 @@ class RepositoryListFragment : Fragment() {
                 if (newText != null) {
                     viewModel.setSearchedName(newText)
                 }
+                binding.emptyView.visibility = View.GONE
                 return false
             }
         })
@@ -123,6 +149,11 @@ class RepositoryListFragment : Fragment() {
     }
 
     private fun updateRepositories(){
+        if(viewModel.gitHubRepositories.value?.size == 0){
+            binding.progressBar.visibility = View.VISIBLE
+            binding.emptyView.visibility = View.GONE
+        }
+
         val job = Job()
         CoroutineScope(job + Dispatchers.Main).launch {
             val result = viewModel.refreshDataFromRepository()
@@ -132,6 +163,11 @@ class RepositoryListFragment : Fragment() {
                     R.string.refresh_done_toast_message,
                     Toast.LENGTH_SHORT
                 ).show()
+                if (viewModel.gitHubRepositories.value?.size ?: 0 > 0){
+                    binding.emptyView.visibility = View.GONE
+                } else {
+                    binding.emptyView.visibility = View.VISIBLE
+                }
             }
             else if (result == 2) {
                 Toast.makeText(
@@ -139,6 +175,11 @@ class RepositoryListFragment : Fragment() {
                     R.string.refresh_failed_toast_message,
                     Toast.LENGTH_SHORT
                 ).show()
+                if (viewModel.gitHubRepositories.value?.size ?: 0 > 0){
+                    binding.emptyView.visibility = View.GONE
+                } else {
+                    binding.emptyView.visibility = View.VISIBLE
+                }
             }
         }
         binding.swipeRefresh.isRefreshing = false

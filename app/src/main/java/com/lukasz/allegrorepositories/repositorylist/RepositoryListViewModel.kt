@@ -26,6 +26,10 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
     val repositoryEmpty: LiveData<Boolean>
         get() = _repositoryEmpty
 
+    private val _repositoryRefreshing = MutableLiveData<Boolean>()
+    val repositoryRefreshing: LiveData<Boolean>
+        get() = _repositoryRefreshing
+
     private val _navigateToSelectedRepository = MutableLiveData<GitHubRepository>()
     val navigateToSelectedRepository: LiveData<GitHubRepository>
         get() = _navigateToSelectedRepository
@@ -48,18 +52,13 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
 
 
     init {
+        if (gitHubRepositories.value?.size ?: 0 == 0){
+            _repositoryRefreshing.value = true
+        }
         _repositoryEmpty.value = false
         val job = Job()
         CoroutineScope(job + Dispatchers.Main).launch {
-            val result = refreshDataFromRepository()
-            if (result == 1) {
-                if (gitHubRepositories.value?.size ?: 0 > 0){
-                    _repositoryEmpty.value = false
-                }
-            }
-            else if (result == 2) {
-                _repositoryEmpty.value = gitHubRepositories.value?.size ?: 0 <= 0
-            }
+            refreshDataFromRepository()
         }
 
     }
@@ -76,9 +75,13 @@ class RepositoryListViewModel(application: Application) : AndroidViewModel(appli
                 1
 
             } catch (e: Exception) {
+                if (gitHubRepositories.value?.size ?: 0 == 0){
+                    _repositoryEmpty.value = gitHubRepositories.value?.size ?: 0 <= 0
+                }
                 Log.i("RepositoryListViewModel", "Refresh Failure: ${e.message}")
                 2
             }
+            _repositoryRefreshing.value = false
         }.join()
         return res
     }
