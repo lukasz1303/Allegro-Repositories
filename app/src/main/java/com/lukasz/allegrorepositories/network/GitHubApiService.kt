@@ -17,7 +17,7 @@ private val moshi = Moshi.Builder()
     .build()
 
 interface GitHubApiService {
-    @GET("orgs/allegro/repos")
+    @GET("orgs/allegro/repos?per_page=100")
     fun getGitHubRepositories(@Query("page") currentPage: Int): Deferred<List<NetworkGitHubRepository>>
 
     @GET("repos/allegro/{name}/languages")

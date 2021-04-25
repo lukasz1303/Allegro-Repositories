@@ -70,7 +70,6 @@ class GitHubReposRepository(private val database: GitHubRepositoriesDatabase) {
                 for (i in languages) {
                     languagesString += i.key + ":" + i.value + ","
                 }
-                Log.i("Refresh", languagesString)
                 database.GithHubRepoitoryDao.updateLanguages(name, languagesString)
             }
         }
