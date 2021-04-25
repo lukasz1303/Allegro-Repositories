@@ -1,5 +1,5 @@
 # Allegro-Repositories
-App for displaying list of allegro repository on GitHub.
+App for displaying list of allegro repositories on GitHub.
 
 # Launch
 To launch the app install allegro-repositories.apk on physical device with Android version 5.0 (API level 21) or higher or run application in Android Studio emulator.
