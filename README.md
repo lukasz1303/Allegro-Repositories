@@ -14,6 +14,6 @@ The application assumed that there's no limit in requests to GitHubApi, and it d
 * Delete repositories from database which are no longer available in GitHubApi
 
 
-#Screenshots
+# Screenshots
 ![Alt text](/screenshots/repository_list.png?raw=true) &nbsp; &nbsp;![Alt text](/screenshots/detail_fragment.png?raw=true)  
 ![Alt text](/screenshots/searching.png?raw=true) &nbsp; &nbsp;![Alt text](/screenshots/not_found.png?raw=true)  
